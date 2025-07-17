@@ -15,6 +15,8 @@ army-modeling/
 │   └── Battle.js         # Battle simulation logic
 └── tests/
     └── army.test.js      # Jest test suite
+    └── civilization.test.js      # Jest test suite
+    └── unit.test.js      # Jest test suite
 ```
 
 ## 🚀 Getting Started
@@ -48,6 +50,9 @@ You should see a test summary indicating correct behavior for training, transfor
 - Training units and updating strength/gold
 - Transforming units to stronger types
 - Simulating battles and checking gold/unit consequences
+- Civilization initialization
+- Unit ages (getters and setters)
+
 
 ## ✍️ Notes
 
