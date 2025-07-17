@@ -6,10 +6,11 @@ class Knight extends Unit {
   }
 
   train() {
-    if (this.army.gold >= 30) {
-      this.army.gold -= 30;
-      this.strength += 10;
-    }
+    super.train(30, 10);
+  }
+
+  transform() {
+    throw new Error("Transformation not available for knights.");
   }
 }
 

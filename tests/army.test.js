@@ -47,3 +47,83 @@ test('Battle resolves and awards gold to winner', () => {
   expect(battle.winner).toBe(army1);
   expect(army1.gold).toBe(1100);
 });
+
+
+ test('trainUnit: exists in army and trains correctly', () => {
+    const civ = new Civilization('chinos');
+    const army = new Army(civ);
+    const pik = army.units.find(u => u instanceof Pikeman);
+    expect(pik).toBeDefined();
+
+    const goldBefore = army.gold;
+    const strengthBefore = pik.strength;
+
+    const result = army.trainUnit(pik);
+    expect(result).toBe(true);
+    expect(army.gold).toBeLessThan(goldBefore);
+    expect(pik.strength).toBeGreaterThan(strengthBefore);
+  });
+
+  test('trainUnit: returns false for external unit', () => {
+    const civ = new Civilization('chinos');
+    const army = new Army(civ);
+    const otherArmy = new Army(new Civilization('ingleses'));
+    const foreign = otherArmy.units[0];
+    expect(army.trainUnit(foreign)).toBe(false);
+  });
+
+
+  test('attack: winner gets gold, loser loses strongest units', () => {
+    const civ1 = new Civilization('ingleses');
+    const civ2 = new Civilization('chinos');
+    const army1 = new Army(civ1);
+    const army2 = new Army(civ2);
+
+    const beforeGold1 = army1.gold;
+    const beforeGold2 = army2.gold;
+    const beforeUnits2 = army2.units.length;
+
+    const battle = army1.attack(army2);
+    expect(battle).toBeDefined();
+    expect(army1.battles).toContain(battle);
+    expect(army2.battles).toContain(battle);
+
+    if (battle.winner === army1) {
+      expect(army1.gold).toBe(beforeGold1 + 100);
+      expect(army2.units.length).toBeLessThan(beforeUnits2);
+    } else if (battle.winner === army2) {
+      expect(army2.gold).toBe(beforeGold2 + 100);
+      expect(army1.units.length).toBeLessThan(new Army(civ1).units.length);
+    } else {
+      // empate, por default removeTopUnits quita solamente 1
+      expect(army1.units.length).toBe(new Army(civ1).units.length - 1);
+      expect(army2.units.length).toBe(new Army(civ2).units.length - 1);
+    }
+  });
+
+
+
+  test('transform(): reemplaza unidad correctamente', () => {
+  const civ = new Civilization('chinos');
+  const army = new Army(civ);
+  const pik = army.units.find(u => u instanceof Pikeman);
+  expect(pik).toBeDefined();
+
+  const idx = army.units.indexOf(pik);
+  const goldBefore = army.gold;
+
+  const success = army.transform(pik);
+  expect(success).toBe(true);
+  expect(army.units[idx]).toBeInstanceOf(Archer);
+  expect(army.gold).toBeLessThan(goldBefore);
+});
+
+
+test('transforming a Knight should throw an error', () => {
+  const army = new Army(new Civilization('ingleses'));
+  const knight = army.units.find(u => u instanceof Knight);
+
+  expect(knight).toBeDefined();
+
+  expect(() => knight.transform()).toThrow("Transformation not available for knights.");
+});

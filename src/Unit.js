@@ -6,13 +6,32 @@ class Unit {
     this.age = 0;
   }
 
-  train() {
-    throw new Error("Must be implemented by subclass");
+getAge() {
+  return this.age;
+}
+
+setAge(age) {
+  this.age = age;
+}
+
+
+train(cost, strength) {
+  if (this.army.gold >= cost) {
+        this.army.gold -= cost;
+        this.strength += strength;
+      }
   }
 
-  transform() {
-    throw new Error("Transformation not available for this unit type.");
+  
+
+transform(cost, NewUnitClass) {
+  if (this.army.gold >= cost) {
+    this.army.gold -= cost;
+    return new NewUnitClass(this.army);
   }
+return null;
+}
+
 }
 
 module.exports = Unit;

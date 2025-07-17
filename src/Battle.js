@@ -12,23 +12,20 @@ class Battle {
 
     if (attackerStrength > defenderStrength) {
       this.attacker.gold += 100;
-      this.removeTopUnits(this.defender);
+      this.defender.removeTopUnits(2);
       return this.attacker;
     } else if (attackerStrength < defenderStrength) {
       this.defender.gold += 100;
-      this.removeTopUnits(this.attacker);
+      this.attacker.removeTopUnits(2);
       return this.defender;
     } else {
-      this.removeTopUnits(this.attacker, 1);
-      this.removeTopUnits(this.defender, 1);
+      this.attacker.removeTopUnits(1);
+      this.defender.removeTopUnits(1);
       return null;
     }
   }
 
-  removeTopUnits(army, count = 2) {
-    army.units.sort((a, b) => b.strength - a.strength);
-    army.units.splice(0, count);
-  }
+  
 }
 
 module.exports = Battle;

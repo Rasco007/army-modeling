@@ -7,18 +7,11 @@ class Pikeman extends Unit {
   }
 
   train() {
-    if (this.army.gold >= 10) {
-      this.army.gold -= 10;
-      this.strength += 3;
-    }
+    super.train(10, 3);
   }
 
   transform() {
-    if (this.army.gold >= 30) {
-      this.army.gold -= 30;
-      return new Archer(this.army);
-    }
-    return null;
+      return super.transform(30, require('./Archer'));
   }
 }
 

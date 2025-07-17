@@ -7,18 +7,11 @@ class Archer extends Unit {
   }
 
   train() {
-    if (this.army.gold >= 20) {
-      this.army.gold -= 20;
-      this.strength += 7;
-    }
+    super.train(20, 7);
   }
 
   transform() {
-    if (this.army.gold >= 40) {
-      this.army.gold -= 40;
-      return new Knight(this.army);
-    }
-    return null;
+    return super.transform(40, require('./Knight'));
   }
 }
 
